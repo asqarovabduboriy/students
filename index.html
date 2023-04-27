@@ -10,6 +10,12 @@
   <script src="https://kit.fontawesome.com/1a052ad93a.js" crossorigin="anonymous"></script> 
 </head>
 
+<style>
+  mark{
+    font-size: 20px;
+    color: red;
+  }
+</style>
 <body>
   <div class="container my-5">
     <div class="d-flex justify-content-between">
@@ -43,10 +49,12 @@
           <div class="mb-3">
             <label for="sortby" class="form-label">Sort by</label>
             <select class="form-select" id="sortby">
-              <option value="1">Name</option>
-              <option value="2">Mark: to lowest</option>
-              <option value="3">Mark: to highest</option>
-              <option value="4">Marked date</option>
+              <option value="" selected disabled>Select sort type</option>
+              <option value="az">AZ-a-z</option>
+              <option value="za">ZA-z-a</option>
+              <option value="tolowest">Mark: to lowest</option>
+              <option value="tohighest">Mark: to highest</option>
+              <option value="date">Marked date</option>
             </select>
           </div>
 

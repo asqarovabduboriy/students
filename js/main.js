@@ -1,7 +1,45 @@
 let elStudentRow = document.getElementById('student-template').content;
 let elTablebody =document.getElementById('students-table-body');
 let elFilter =document.querySelector(".filter");
-let elSearch = document.getElementById("search")
+let elSearch = document.getElementById("search");
+let elFrom = document.getElementById('from');
+let elTo = document.getElementById('to');
+let elSort = document.getElementById('sortby');
+
+
+let sortfn = {
+    az: (a,b) => {
+     if (a.name > b.name) {
+        return 1;
+     }
+
+     if (a.name < b.name) {
+        return -1;
+     }
+
+     return 0;
+    },
+
+    za: (a,b) => {
+        if (a.name > b.name) {
+           return -1;
+        }
+   
+        if (a.name < b.name) {
+           return 1;
+        }
+   
+        return 0;
+       },
+       tolowest: (a,b)  => b.mark - a.mark,
+       tohighest: (a,b)  => a.mark - b.mark,
+       date: (a,b) => {
+        new Date (a.markedDate).getSeconds() - new Date(a.markedDate).getSeconds();
+
+    } 
+
+}
+
 function renderStudents(arr){
     elTablebody.innerHTML = null;
     arr.forEach(element => {
@@ -44,28 +82,41 @@ function Onfilter(evt) {
    
   
     let searchvalue =elSearch.value.trim();
-    if (!searchvalue) {
-        alert('input some value')
-    }
+   
 
 
     let regex = new RegExp(searchvalue, 'gi')
-    console.log(regex);
+    console.log(elFrom, elTo);
 
    let filtredstudents = []
    students.forEach((student) => {
-    if (student.name .match(regex)) {
-       filtredstudents.push(  {... student,name: student.name.replace(searchvalue,`<mark>${searchvalue}</mark>`),
-    });
-   console.log(filtredstudents.name)
+    if (!searchvalue) {
+        return filtredstudents.push(student)
         
-     }});
-  
-  
-renderStudents(filtredstudents)
+    }
+    if (`${student.name} ${student.Lastname}`.match(regex)) {
+        let text = `${student.name} ${student.Lastname}`.match(regex) [0];
 
+        console.log(text)
+           filtredstudents.push({
+               ...student, 
+                   name: student.name .replace(text,  `<mark>${text}</mark>`),
+           });
+          
+
+       }
+   });
+
+  if (elFrom.value && elTo.value ) {
+ filtredstudents = filtredstudents.filter((student)=>student.mark >= elFrom.value -0 && student.mark <= elTo.value -0 )
+}
+if (elSort.value) {
+    filtredstudents.sort(sortfn[elSort.value])
+    
 }
 
+renderStudents(filtredstudents)
+}
 
 elFilter.addEventListener('submit',Onfilter )
 
